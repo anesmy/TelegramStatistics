@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.CascadeType;
 import java.util.List;
 
 @Data
@@ -19,6 +20,7 @@ public class ChatHistory {
     private long id;
     private String name;
     private String type;
-    @OneToMany
+    
+    @OneToMany(mappedBy = "chatHistory", cascade = CascadeType.ALL)
     private List<Message> messages;
 }

@@ -9,6 +9,10 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Column;
+import javax.persistence.CascadeType;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -19,13 +23,23 @@ import java.util.List;
 public class Message {
 
     @Id
-    private long id;
+    @JsonProperty("id")
+    private long messageId;
+
     private String type;
     private LocalDateTime date;
+
     @JsonProperty("from")
     private String from_user;
+
     private String from_id;
+
+    @Column(length = 1000)
     private String messageText;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "chatId")
+    private ChatHistory chatHistory;
 
     @JsonSetter("date")
     public void setDateFromString(String dateString) {
