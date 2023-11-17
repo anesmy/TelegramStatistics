@@ -2,6 +2,7 @@ package com.example.telegramstatistics.controller;
 
 import com.example.telegramstatistics.mapper.ChatHistoryMapper;
 import com.example.telegramstatistics.models.ChatHistory;
+import com.example.telegramstatistics.models.Message;
 import com.example.telegramstatistics.models.User;
 import com.example.telegramstatistics.service.ChatHistoryService;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/statistics")
@@ -29,6 +32,8 @@ public class StatisticsController {
     public ResponseEntity<String> getStatistics(@RequestParam() MultipartFile file) {
         try {
             ChatHistory chatHistory = mapper.mapJsonFileToObject(file.getInputStream(), ChatHistory.class);
+
+            chatHistory.getMessages().forEach(m -> m.setChatHistory(chatHistory));
             service.saveChatHistory(chatHistory);
 
             return ResponseEntity.ok("File processed successfully");

@@ -1,6 +1,7 @@
 package com.example.telegramstatistics.models;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 
@@ -17,7 +18,9 @@ import java.util.List;
 public class ChatHistory {
 
     @Id
-    private long id;
+    @JsonProperty("id")
+    private long chatId;
+
     private String name;
     private String type;
     

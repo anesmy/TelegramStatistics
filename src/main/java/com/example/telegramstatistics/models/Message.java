@@ -12,11 +12,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Column;
+import javax.persistence.IdClass;
+import javax.persistence.FetchType;
 import javax.persistence.CascadeType;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+@IdClass(MessageId.class)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 @Data
@@ -25,6 +28,11 @@ public class Message {
     @Id
     @JsonProperty("id")
     private long messageId;
+
+    @Id
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "chatId")
+    private ChatHistory chatHistory;
 
     private String type;
     private LocalDateTime date;
@@ -37,9 +45,6 @@ public class Message {
     @Column(length = 1000)
     private String messageText;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "chatId")
-    private ChatHistory chatHistory;
 
     @JsonSetter("date")
     public void setDateFromString(String dateString) {
